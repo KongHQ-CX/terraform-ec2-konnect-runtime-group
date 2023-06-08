@@ -84,6 +84,24 @@ resource "aws_autoscaling_policy" "kong_autoscaling_policy" {
   name                   = "kong-asp-${var.runtime_group_name}"
   scaling_adjustment     = 1
   adjustment_type        = "ChangeInCapacity"
-  cooldown               = 300
+  cooldown               = 60
   autoscaling_group_name = aws_autoscaling_group.kong.name
+}
+
+resource "aws_cloudwatch_metric_alarm" "kong_autoscaling_metric" {
+  alarm_name          = "kong-asp-${var.runtime_group_name}"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = 2
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = 60
+  statistic           = "Average"
+  threshold           = 80
+
+  dimensions = {
+    AutoScalingGroupName = aws_autoscaling_group.kong.name
+  }
+
+  alarm_description = "Kong runtime group ${var.runtime_group_name} exceeded CPU limits for 120 seconds, causing an autoscaling event."
+  alarm_actions     = [aws_autoscaling_policy.kong_autoscaling_policy.arn]
 }

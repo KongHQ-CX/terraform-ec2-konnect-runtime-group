@@ -17,7 +17,7 @@ resource "aws_launch_template" "kong_alt" {
 
   instance_type = var.instance_tier
 
-  key_name = aws_key_pair.ssh_public_key.key_name
+  key_name = var.ssh_public_key != null ? aws_key_pair.ssh_public_key[0].key_name : null
 
   network_interfaces {
     associate_public_ip_address = var.assign_instance_public_ip
@@ -42,6 +42,8 @@ resource "aws_launch_template" "kong_alt" {
 }
 
 resource "aws_key_pair" "ssh_public_key" {
+  count = var.ssh_public_key != null ? 1 : 0
+
   key_name   = "${var.runtime_group_name}-public-key"
   public_key = var.ssh_public_key
 }

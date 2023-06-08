@@ -103,6 +103,7 @@ variable "assign_instance_public_ip" {
 variable "ssh_public_key" {
   description = "Public Key string to use for SSH access to the Kong instances."
   type = string
+  default = null
 }
 
 variable "root_volume_size" {

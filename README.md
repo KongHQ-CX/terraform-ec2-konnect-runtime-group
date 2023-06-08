@@ -30,7 +30,7 @@ d) Scroll down to the **Configuration Parameters** and copy/save the two values 
 > - cluster server name
 > - telemetry server name
 
-### 2. Create AWS Secret
+### 2. Create AWS Secret
 
 a) Flatten the certificate file by replacing new lines with "\n", or use a shell:
 

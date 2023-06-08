@@ -147,6 +147,7 @@ do_acm_certificate_request = true
 | <a name="input_ssh_public_key"></a> [ssh\_public\_key](#input\_ssh\_public\_key) | Public Key string to use for SSH access to the Kong instances. | `string` | n/a | yes |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | Array of subnets to scale this Kong deployment across. | `list` | n/a | yes |
 | <a name="input_use_nlb"></a> [use\_nlb](#input\_use\_nlb) | Set true to use an NLB instead of ALB. Usually required for mutual-TLS support. | `bool` | `false` | no |
+| <a name="internal_load_balancer"></a> [internal\_load\_balancer](#internal\_load\_balancer) | Set true to produce an internal only load balancer, on the given internal subnets, or set false for public-facing ALB. | `bool` | `false` | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID to install this Kong deployment in to. | `string` | n/a | yes |
 
 ## Outputs

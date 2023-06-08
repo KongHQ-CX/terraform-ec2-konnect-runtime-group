@@ -32,6 +32,12 @@ variable "vpc_id" {
   type = string
 }
 
+variable "internal_load_balancer" {
+  description = "Set true to produce an internal only load balancer, on the given internal subnets, or set false for public-facing ALB."
+  type = bool
+  default = false
+}
+
 variable "hosted_zone_id" {
   description = "Route53 hosted zone to add ALB records to."
   type = string

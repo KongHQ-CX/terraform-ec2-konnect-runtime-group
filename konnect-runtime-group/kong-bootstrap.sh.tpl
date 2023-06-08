@@ -44,11 +44,13 @@ aws secretsmanager get-secret-value --output text --secret-id "konnect/rg/$RUNTI
 openssl req -x509 -newkey rsa:4096 -keyout /etc/kong/proxy-cert.key -out /etc/kong/proxy-cert.crt -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=CommonNameOrHostname"
 
 cat <<EOF > /etc/kong/kong.conf
-status_listen = 0.0.0.0:8100
+# Server
 proxy_listen = 0.0.0.0:8443 ssl http2
+status_listen = 0.0.0.0:8100
 ssl_cert = /etc/kong/proxy-cert.crt
 ssl_cert_key = /etc/kong/proxy-cert.key
 
+# Clustering
 role = data_plane
 database = off
 cluster_mtls = pki
@@ -62,9 +64,14 @@ lua_ssl_trusted_certificate = system
 konnect_mode = on
 vitals = off
 
+# Load Balancing
 trusted_ips = ${ vpc_cidr }
 real_ip_recursive = on
 real_ip_header = x-forwarded-for
+
+# OTel
+tracing_instrumentations = all
+tracing_sampling_rate = 1.0
 EOF
 
 # Replace broken SAML plugin on Ubuntu with nothing stub

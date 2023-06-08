@@ -35,10 +35,10 @@ fi
 
 echo ">> Trying to read Konnect clustering information from secretsmanager://konnect/rg/$RUNTIME_GROUP_NAME"
 # Get runtime group information from Secrets Manager
-CONTROL_PLANE_CLUSTER_HOSTNAME=$(aws secretsmanager get-secret-value --output text --secret-id "konnect/rg/jj2" --query 'SecretString' | jq -r '.cluster_hostname')
-CONTROL_PLANE_TELEMETRY_HOSTNAME=$(aws secretsmanager get-secret-value --output text --secret-id "konnect/rg/jj2" --query 'SecretString' | jq -r '.telemetry_hostname')
-aws secretsmanager get-secret-value --output text --secret-id "konnect/rg/jj2" --query 'SecretString' | jq -r '.cert' > /etc/kong/cluster-cert.crt
-aws secretsmanager get-secret-value --output text --secret-id "konnect/rg/jj2" --query 'SecretString' | jq -r '.key' > /etc/kong/cluster-cert.key
+CONTROL_PLANE_CLUSTER_HOSTNAME=$(aws secretsmanager get-secret-value --output text --secret-id "konnect/rg/$RUNTIME_GROUP_NAME" --query 'SecretString' | jq -r '.cluster_hostname')
+CONTROL_PLANE_TELEMETRY_HOSTNAME=$(aws secretsmanager get-secret-value --output text --secret-id "konnect/rg/$RUNTIME_GROUP_NAME" --query 'SecretString' | jq -r '.telemetry_hostname')
+aws secretsmanager get-secret-value --output text --secret-id "konnect/rg/$RUNTIME_GROUP_NAME" --query 'SecretString' | jq -r '.cert' > /etc/kong/cluster-cert.crt
+aws secretsmanager get-secret-value --output text --secret-id "konnect/rg/$RUNTIME_GROUP_NAME" --query 'SecretString' | jq -r '.key' > /etc/kong/cluster-cert.key
 
 # Generate a null certificate for ALB compatibility
 openssl req -x509 -newkey rsa:4096 -keyout /etc/kong/proxy-cert.key -out /etc/kong/proxy-cert.crt -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=CommonNameOrHostname"
